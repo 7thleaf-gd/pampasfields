@@ -19,11 +19,45 @@ export default defineConfig({
       }
     },
     {
+      name: 'site-social-meta',
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html) {
+          const imageUrl = 'https://7thleaf-gd.github.io/pampasfields/assets/images/ogp.png';
+          const replaceOrInsert = (source, matcher, tag) => (
+            matcher.test(source)
+              ? source.replace(matcher, tag)
+              : source.replace('</head>', `${tag}</head>`)
+          );
+          let output = replaceOrInsert(
+            html,
+            /<meta property="og:image" content="[^"]*">/,
+            `<meta property="og:image" content="${imageUrl}">`
+          );
+          output = replaceOrInsert(
+            output,
+            /<meta name="twitter:image" content="[^"]*">/,
+            `<meta name="twitter:image" content="${imageUrl}">`
+          );
+          output = replaceOrInsert(
+            output,
+            /<meta name="twitter:card" content="[^"]*">/,
+            '<meta name="twitter:card" content="summary_large_image">'
+          );
+          return output.replace(
+            '</head>',
+            '<meta property="og:image:width" content="1536"><meta property="og:image:height" content="1024"><meta property="og:image:alt" content="THE PAN — Pampas Fields Noise Found art"></head>'
+          );
+        }
+      }
+    },
+    {
       name: 'site-fonts',
       transformIndexHtml: {
         order: 'pre',
         handler() {
           return [
+            { tag: 'link', attrs: { rel: 'icon', href: `${pagesBase}favicon.ico`, sizes: 'any' }, injectTo: 'head-prepend' },
             { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' }, injectTo: 'head-prepend' },
             { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }, injectTo: 'head-prepend' },
             { tag: 'link', attrs: { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap' }, injectTo: 'head-prepend' }

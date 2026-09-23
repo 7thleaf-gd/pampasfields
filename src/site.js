@@ -51,3 +51,9 @@ if(id){
     }
   });
 }
+
+const networkBar=document.createElement('aside');
+networkBar.className='network-bar';
+networkBar.setAttribute('aria-label','7thleaf network');
+networkBar.innerHTML='<span>EXPLORE THE SIGNAL</span><a href="https://thepan.xyz/">THE PAN</a><a href="https://tools.thepan.xyz/">BROWSER TOOLS</a><a href="https://7thleaf.base.shop/">SHOP</a>';
+document.body.append(networkBar);

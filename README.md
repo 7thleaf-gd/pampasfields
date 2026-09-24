@@ -20,12 +20,31 @@ CODEX_TASK.mdを読んで、現行の https://pampasfields.com/ を確認しな�
 
 ## Production deployment
 
-Canonical production is Cloudflare Pages project `pampasfields` on `pampasfields.com`.
+Canonical production target is Cloudflare Workers Static Assets.
 
-GitHub Actions deployment is retired. Use Cloudflare Git Integration when healthy; direct recovery/deploy is:
+Repository:
+- `7thleaf-gd/pampasfields`
+
+Worker:
+- `pampasfields`
+- Cloudflare account: `85c112de7152c89bb5ea84fdcb397e41`
+
+Normal deployment goal:
+
+```text
+GitHub main
+  -> Cloudflare Workers Builds
+  -> npm ci && npm run build
+  -> npx wrangler deploy
+  -> pampasfields Worker
+```
+
+GitHub Actions deployment is retired and must not be restored while runner capacity is unavailable.
+
+Direct recovery/deploy:
 
 ```bash
 ./scripts/deploy-direct.sh
 ```
 
-Do not add a scheduled or push-triggered GitHub Actions deploy.
+The Wrangler config is `wrangler.jsonc` and serves `./dist` through Workers Static Assets.

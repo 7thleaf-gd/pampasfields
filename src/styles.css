@@ -411,3 +411,28 @@ h1, h2, h3, strong { font-weight: 800; }
 .network-bar a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.55);padding:2px 0}
 .network-bar a:hover,.network-bar a:focus-visible{border-bottom-color:#fff}
 @media(max-width:620px){.network-bar{left:8px;right:8px;bottom:8px;gap:8px;font-size:10px}.network-bar span{width:100%;text-align:center}}
+
+
+/* Restored PFNFA lyric archive */
+.lyrics-intro { max-width: 720px; margin: 30px 0 0; color: #bbb; font-size: clamp(16px, 1.8vw, 22px); }
+.lyrics-index { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--line); margin: -2vw 0 9vw; }
+.lyrics-index a { padding: 18px 0; border-bottom: 1px solid var(--line); font-size: clamp(15px,2vw,24px); font-weight: 700; }
+.lyrics-index a:nth-child(odd) { padding-right: 20px; }
+.lyrics-archive { max-width: 920px; }
+.lyrics-song { padding: 0 0 11vw; scroll-margin-top: 40px; }
+.lyrics-song + .lyrics-song { padding-top: 9vw; border-top: 1px solid var(--line); }
+.lyrics-song-head { margin-bottom: 55px; }
+.lyrics-song-head > span { display: block; color: var(--muted); font: 700 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .16em; }
+.lyrics-song-head h2 { max-width: 880px; margin: 10px 0 14px; font-size: clamp(38px,7vw,88px); line-height: .94; letter-spacing: -.055em; }
+.lyrics-credit { margin: 0; color: var(--muted); font-size: 12px; }
+.lyrics-lines { display: grid; gap: 0; }
+.lyric-line { margin: 0; padding: 8px 0; font-size: clamp(15px,1.55vw,20px); line-height: 1.55; }
+.lyric-en { font-weight: 650; }
+.lyric-ja { color: #a9a9a9; padding-top: 0; padding-bottom: 19px; font-size: clamp(13px,1.35vw,17px); }
+@media (max-width:760px) {
+  .lyrics-index { grid-template-columns: 1fr; margin-bottom: 80px; }
+  .lyrics-index a:nth-child(odd) { padding-right: 0; }
+  .lyrics-song { padding-bottom: 100px; }
+  .lyrics-song + .lyrics-song { padding-top: 80px; }
+  .lyrics-song-head { margin-bottom: 38px; }
+}

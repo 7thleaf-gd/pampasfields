@@ -1,0 +1,4 @@
+pampasfields deploy probe 2026-09-24T11:50+09:00
+expected-nav=THE PAN|BROWSER TOOLS|SHOP
+studio=removed
+shop=https://7thleaf.thebase.in/

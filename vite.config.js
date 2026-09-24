@@ -23,7 +23,7 @@ export default defineConfig({
       transformIndexHtml: {
         order: 'pre',
         handler(html) {
-          const imageUrl = 'https://7thleaf-gd.github.io/pampasfields/assets/images/ogp.png';
+          const imageUrl = 'https://pampasfields.com/assets/images/ogp.png';
           const replaceOrInsert = (source, matcher, tag) => (
             matcher.test(source)
               ? source.replace(matcher, tag)

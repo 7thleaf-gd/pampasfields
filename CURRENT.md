@@ -30,10 +30,10 @@ GitHub main
 - Global API Key must not be stored as a deploy credential.
 - Cloudflare Workers Builds / Git Integration is not a parallel production executor.
 - GitHub Actions is not a production deploy path.
-- Mac / DC / RDC is recovery only.
-- `scripts/deploy-direct.sh` is recovery only.
+- Mac / DC / RDC is recovery only and is not a production deploy executor.
+- Manual direct-deploy scripts are retired and must not be restored.
 - `wrangler.jsonc` must keep `route: "pampasfields.com/*"`.
-- No alternate deploy lane may be added beside this path.
+- No alternate deploy lane, direct-deploy script, or relay may be added beside this path.
 - Production is complete only after live readback from `https://pampasfields.com/` passes.
 
 ## Current live boundary

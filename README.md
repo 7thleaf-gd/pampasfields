@@ -38,8 +38,8 @@ Deployment authority is `.circleci/config.yml` using CircleCI context `7thleaf-s
 - Global API Key is not a production credential and must not be stored in CircleCI.
 - Cloudflare Workers Builds / Git integration is not a second production executor.
 - GitHub Actions is not a production deploy path.
-- Mac / DC / RDC and `scripts/deploy-direct.sh` are recovery only.
-- Do not add another production executor without explicitly replacing this authority.
+- The repository has no manual deploy script. Mac / DC / RDC are recovery surfaces only, not deploy executors.
+- Do not add another production executor, direct-deploy script, or relay beside this path.
 - The Worker route `pampasfields.com/*` is part of production and must remain in `wrangler.jsonc`.
 - A deploy is incomplete until live readback from `https://pampasfields.com/` passes.
 

@@ -1,0 +1,65 @@
+version: 2.1
+
+jobs:
+  deploy-production:
+    docker:
+      - image: cimg/node:24.8
+    resource_class: small
+    environment:
+      CLOUDFLARE_ACCOUNT_ID: "85c112de7152c89bb5ea84fdcb397e41"
+      PRODUCTION_URL: "https://pampasfields.com/"
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: |
+            set -euo pipefail
+            npm ci
+            npm run build
+            test -d dist
+      - run:
+          name: Deploy to Cloudflare Workers
+          command: |
+            set -euo pipefail
+            : "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN is required}"
+            : "${CLOUDFLARE_ACCOUNT_ID:?CLOUDFLARE_ACCOUNT_ID is required}"
+            npx --yes wrangler@4.141.0 deploy
+      - run:
+          name: Production readback
+          command: |
+            set -euo pipefail
+            for i in $(seq 1 30); do
+              curl -fsS --max-time 15 "$PRODUCTION_URL" -o /tmp/pampas-live.html || true
+              if python3 - <<'PY'
+            from pathlib import Path
+            import re, urllib.request
+            p=Path("/tmp/pampas-live.html")
+            s=p.read_text(errors="ignore") if p.exists() else ""
+            ok=("Independent creative project based in Sapporo, Japan." in s and
+                "BROWSER TOOLS" in s and
+                "stashthemes.com" not in s)
+            if ok:
+                m=re.search(r'<script[^>]+src="([^"]*site-[^"]+\.js)"',s)
+                if m:
+                    url="https://pampasfields.com"+m.group(1)
+                    js=urllib.request.urlopen(url,timeout=15).read().decode("utf-8","ignore")
+                    ok=("7thleaf.xyz" not in js and ">STUDIO<" not in js and "7thleaf.thebase.in" in js)
+            raise SystemExit(0 if ok else 1)
+            PY
+              then
+                echo "PAMPASFIELDS_PRODUCTION_READBACK=PASS"
+                exit 0
+              fi
+              sleep 4
+            done
+            exit 33
+
+workflows:
+  production:
+    jobs:
+      - deploy-production:
+          context: 7thleaf-studios-deploy
+          serial-group: << pipeline.project.slug >>/production
+          filters:
+            branches:
+              only: main

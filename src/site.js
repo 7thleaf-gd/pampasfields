@@ -55,5 +55,6 @@ if(id){
 const networkBar=document.createElement('aside');
 networkBar.className='network-bar';
 networkBar.setAttribute('aria-label','7thleaf network');
+// Public PFNFA network intentionally excludes the 7thleaf Studio route.
 networkBar.innerHTML='<span>EXPLORE THE SIGNAL</span><a href="https://thepan.xyz/">THE PAN</a><a href="https://tools.thepan.xyz/">BROWSER TOOLS</a><a href="https://7thleaf.thebase.in/">SHOP</a>';
 document.body.append(networkBar);

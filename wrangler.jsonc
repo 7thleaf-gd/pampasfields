@@ -3,6 +3,7 @@
   "name": "pampasfields",
   "account_id": "85c112de7152c89bb5ea84fdcb397e41",
   "compatibility_date": "2026-09-24",
+  "route": "pampasfields.com/*",
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"

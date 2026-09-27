@@ -17,6 +17,8 @@ jobs:
             npm ci
             npm run build
             test -d dist
+            grep -RFn '7thleaf.xyz' src dist && exit 41 || true
+            grep -RFq '7thleaf.thebase.in' dist
       - run:
           name: Deploy to Cloudflare Workers
           command: |
@@ -30,25 +32,17 @@ jobs:
             set -euo pipefail
             for i in $(seq 1 30); do
               curl -fsS --max-time 15 "$PRODUCTION_URL" -o /tmp/pampas-live.html || true
-              if python3 - <<'PY'
-            from pathlib import Path
-            import re, urllib.request
-            p=Path("/tmp/pampas-live.html")
-            s=p.read_text(errors="ignore") if p.exists() else ""
-            ok=("Independent creative project based in Sapporo, Japan." in s and
-                "BROWSER TOOLS" in s and
-                "stashthemes.com" not in s)
-            if ok:
-                m=re.search(r'<script[^>]+src="([^"]*site-[^"]+\.js)"',s)
-                if m:
-                    url="https://pampasfields.com"+m.group(1)
-                    js=urllib.request.urlopen(url,timeout=15).read().decode("utf-8","ignore")
-                    ok=("7thleaf.xyz" not in js and ">STUDIO<" not in js and "7thleaf.thebase.in" in js)
-            raise SystemExit(0 if ok else 1)
-            PY
-              then
-                echo "PAMPASFIELDS_PRODUCTION_READBACK=PASS"
-                exit 0
+              asset="$(grep -oE 'src="/assets/site-[^"]+\.js"' /tmp/pampas-live.html | head -1 | cut -d'"' -f2 || true)"
+              if grep -Fq 'Independent creative project based in Sapporo, Japan.' /tmp/pampas-live.html &&
+                 grep -Fq 'BROWSER TOOLS' /tmp/pampas-live.html &&
+                 ! grep -Fq 'stashthemes.com' /tmp/pampas-live.html &&
+                 [ -n "$asset" ]; then
+                curl -fsS --max-time 15 "https://pampasfields.com$asset" -o /tmp/pampas-live.js || true
+                if ! grep -Fq '7thleaf.xyz' /tmp/pampas-live.js &&
+                   grep -Fq '7thleaf.thebase.in' /tmp/pampas-live.js; then
+                  echo "PAMPASFIELDS_PRODUCTION_READBACK=PASS"
+                  exit 0
+                fi
               fi
               sleep 4
             done

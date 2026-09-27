@@ -1,26 +1,25 @@
-# pampasfields.com local migration
+# pampasfields.com
 
-## 起動
+Static production site for `https://pampasfields.com/`.
+
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-表示されたローカルURLをブラウザで開く。
-
-## Codexへ渡す
-Codexにこのフォルダを開かせて、最初に `CODEX_TASK.md` を読ませる。
-
-推奨プロンプト:
+## Canonical deployment
 
 ```text
-CODEX_TASK.mdを読んで、現行の https://pampasfields.com/ を確認しながらTumblrから静的サイトへ移管してください。まず現行ページとこのリポジトリを比較し、必要な素材と未実装箇所を洗い出した後、そのまま実装、ビルド確認まで進めてください。
+GitHub main
+  -> CircleCI
+  -> npm ci && npm run build
+  -> wrangler deploy
+  -> Cloudflare Workers Static Assets / pampasfields
+  -> pampasfields.com/*
+  -> production readback
 ```
-
-## Production deployment
-
-Canonical production target is Cloudflare Workers Static Assets.
 
 Repository:
 - `7thleaf-gd/pampasfields`
@@ -28,23 +27,22 @@ Repository:
 Worker:
 - `pampasfields`
 - Cloudflare account: `85c112de7152c89bb5ea84fdcb397e41`
+- Production route: `pampasfields.com/*`
 
-Normal deployment goal:
+Deployment authority is `.circleci/config.yml` using CircleCI context `7thleaf-studios-deploy`.
 
-```text
-GitHub main
-  -> Cloudflare Workers Builds
-  -> npm ci && npm run build
-  -> npx wrangler deploy
-  -> pampasfields Worker
-```
+### Locked rules
 
-GitHub Actions deployment is retired and must not be restored while runner capacity is unavailable.
+- Normal deploys use only CircleCI -> Cloudflare Workers.
+- `CLOUDFLARE_API_TOKEN` is the only Cloudflare production credential used by the deploy job.
+- Global API Key is not a production credential and must not be stored in CircleCI.
+- Cloudflare Workers Builds / Git integration is not a second production executor.
+- GitHub Actions is not a production deploy path.
+- Mac / DC / RDC and `scripts/deploy-direct.sh` are recovery only.
+- Do not add another production executor without explicitly replacing this authority.
+- The Worker route `pampasfields.com/*` is part of production and must remain in `wrangler.jsonc`.
+- A deploy is incomplete until live readback from `https://pampasfields.com/` passes.
 
-Direct recovery/deploy:
+## Wrangler
 
-```bash
-./scripts/deploy-direct.sh
-```
-
-The Wrangler config is `wrangler.jsonc` and serves `./dist` through Workers Static Assets.
+`wrangler.jsonc` serves `./dist` through Workers Static Assets and owns the production route.

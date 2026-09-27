@@ -1,0 +1,42 @@
+# Pampas Fields CURRENT
+
+Status: CURRENT
+Authority: `7thleaf-gd/pampasfields`
+Deploy authority: CircleCI
+Production branch: `main`
+Production hostname: `pampasfields.com`
+Provider: Cloudflare Workers Static Assets
+Worker: `pampasfields`
+Production route: `pampasfields.com/*`
+
+## Canonical deploy path
+
+```text
+GitHub main
+  -> CircleCI
+  -> npm ci
+  -> npm run build
+  -> wrangler deploy
+  -> Cloudflare Worker / pampasfields
+  -> pampasfields.com/*
+  -> production readback
+```
+
+## Fixed rules
+
+- CircleCI is the only normal production deploy executor.
+- CircleCI context: `7thleaf-studios-deploy`.
+- Cloudflare credential: scoped `CLOUDFLARE_API_TOKEN` only.
+- Global API Key must not be stored as a deploy credential.
+- Cloudflare Workers Builds / Git Integration is not a parallel production executor.
+- GitHub Actions is not a production deploy path.
+- Mac / DC / RDC is recovery only.
+- `scripts/deploy-direct.sh` is recovery only.
+- `wrangler.jsonc` must keep `route: "pampasfields.com/*"`.
+- No alternate deploy lane may be added beside this path.
+- Production is complete only after live readback from `https://pampasfields.com/` passes.
+
+## Current live boundary
+
+- Public network bar must not contain a Studio / `7thleaf.xyz` route.
+- Public shop route is `https://7thleaf.thebase.in/`.

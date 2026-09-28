@@ -47,3 +47,10 @@ GitHub main
 - Shared CircleCI context: `7thleaf-studios-deploy`
 - Shared Cloudflare credential was replaced with a long-lived CI API token before this verification run.
 - Verification target: CircleCI deploy -> `https://pampasfields.com/` -> production readback.
+
+## CircleCI connection
+
+- CircleCI project ID: `871da056-ef14-4f61-9df1-8962fbd02398`
+- Project follow: PASS
+- Shared context restriction: `7thleaf-studios-deploy` / project restriction added
+- Executor trace: `CHAPPY-0002-GD-DEPLOY-20260929-PFNFA`

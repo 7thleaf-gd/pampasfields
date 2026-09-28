@@ -54,3 +54,9 @@ GitHub main
 - Project follow: PASS
 - Shared context restriction: `7thleaf-studios-deploy` / project restriction added
 - Executor trace: `CHAPPY-0002-GD-DEPLOY-20260929-PFNFA`
+
+## Chappy 0002 CI guard fix
+
+- CI false-positive guard fixed: the build no longer fails on the defensive source-code literal `hostname==='7thleaf.xyz'`.
+- Acceptance checks published output for an actual `https://7thleaf.xyz` route and still requires the BASE shop route.
+- Production readback remains the final authority.

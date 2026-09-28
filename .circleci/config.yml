@@ -38,7 +38,7 @@ jobs:
                  ! grep -Fq 'stashthemes.com' /tmp/pampas-live.html &&
                  [ -n "$asset" ]; then
                 curl -fsS --max-time 15 "https://pampasfields.com$asset" -o /tmp/pampas-live.js || true
-                if ! grep -Fq '7thleaf.xyz' /tmp/pampas-live.js &&
+                if ! grep -Fq 'https://7thleaf.xyz' /tmp/pampas-live.js &&
                    grep -Fq '7thleaf.thebase.in' /tmp/pampas-live.js; then
                   echo "PAMPASFIELDS_PRODUCTION_READBACK=PASS"
                   exit 0

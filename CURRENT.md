@@ -60,3 +60,9 @@ GitHub main
 - CI false-positive guard fixed: the build no longer fails on the defensive source-code literal `hostname==='7thleaf.xyz'`.
 - Acceptance checks published output for an actual `https://7thleaf.xyz` route and still requires the BASE shop route.
 - Production readback remains the final authority.
+
+## Chappy 0002 production readback fix
+
+- Production deploy itself passed on Worker version `271cdf02-5815-4e21-9f41-f7b78da52f8d`.
+- Production readback false-positive guard fixed: defensive code containing the hostname literal no longer fails the public-link assertion.
+- Readback checks the actual published URL `https://7thleaf.xyz` instead.
